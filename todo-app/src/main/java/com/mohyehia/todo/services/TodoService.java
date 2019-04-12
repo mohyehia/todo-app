@@ -1,52 +1,33 @@
 package com.mohyehia.todo.services;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mohyehia.todo.entities.Todo;
+import com.mohyehia.todo.repositories.TodoRepository;
 
 @Service
 public class TodoService {
 	
-	private List<Todo> data = new ArrayList<>(Arrays.asList(
-		new Todo(1, "Finish Angular", new Date(), false),
-		new Todo(2, "Finish Spring Boot", new Date(), false),
-		new Todo(3, "Finish MySql", new Date(), false),
-		new Todo(4, "Finish Design Patterns", new Date(), false)
-	));
+	@Autowired
+	private TodoRepository todoRepository;
 	
 	public List<Todo> getAll(){
-		return data;
+		return todoRepository.findAll();
 	}
 	
 	public Todo getTodo(int id) {
-		for(Todo todo : data)
-			if(todo.getId() == id) return todo;
-		return null;
+		return todoRepository.findById(id).get();
 	}
 	
 	public Todo saveTodo(Todo todo) {
-		if(todo.getId() == -1 || todo.getId() == 0) {
-			todo.setId(data.size() + 1);
-			data.add(todo);
-		} else {
-			data.remove(getTodo(todo.getId()));
-			data.add(todo);
-		}
-		return todo;
+		return todoRepository.save(todo);
 	}
 	
 	public void deleteTodo(int id) {
-		for(Todo todo : data) {
-			if(todo.getId() == id) {
-				data.remove(todo);
-				return;
-			}
-		}
+		todoRepository.deleteById(id);
 	}
 	
 }
