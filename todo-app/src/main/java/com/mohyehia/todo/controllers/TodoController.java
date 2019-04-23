@@ -1,5 +1,8 @@
 package com.mohyehia.todo.controllers;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +30,11 @@ public class TodoController {
 	
 	@GetMapping(value = {"", "/"})
 	public ResponseEntity<List<Todo>> getAll() {
-		return new ResponseEntity<>(todoService.getAll(), HttpStatus.OK);
+		List<Todo> todos = new ArrayList<>(Arrays.asList(
+			new Todo("desc", new Date(), false),
+			new Todo("desc 2", new Date(), true)
+		)) ;
+		return new ResponseEntity<>(todos, HttpStatus.OK);
 	}
 	
 	@GetMapping("/{id}")
