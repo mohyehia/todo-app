@@ -14,7 +14,7 @@ public class TodoService {
 	@Autowired
 	private TodoRepository todoRepository;
 	
-	public List<Todo> getAll(){
+	public List<Todo> findAll(){
 		return todoRepository.findAll();
 	}
 	
