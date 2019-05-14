@@ -2,6 +2,8 @@ package com.mohyehia.todo.controllers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,23 +33,23 @@ public class TodoController {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Todo> getTodo(@PathVariable int id) {
+	public ResponseEntity<Todo> getTodo(@PathVariable String id) {
 		return new ResponseEntity<>(todoService.getTodo(id), HttpStatus.OK);
 	}
 	
 	@PostMapping(value = {"", "/"})
-	public ResponseEntity<Todo> addTodo(@RequestBody Todo todo) {
+	public ResponseEntity<Todo> addTodo(@Valid @RequestBody Todo todo) {
 		return new ResponseEntity<>(todoService.saveTodo(todo), HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Todo> updateTodo(@PathVariable int id, @RequestBody Todo todo) {
+	public ResponseEntity<Todo> updateTodo(@PathVariable String id, @Valid @RequestBody Todo todo) {
 		todo.setId(id);
 		return new ResponseEntity<Todo>(todoService.saveTodo(todo), HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deleteTodo(@PathVariable int id) {
+	public ResponseEntity<Void> deleteTodo(@PathVariable String id) {
 		todoService.deleteTodo(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}

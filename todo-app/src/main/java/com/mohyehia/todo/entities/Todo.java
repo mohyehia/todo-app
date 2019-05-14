@@ -2,26 +2,25 @@ package com.mohyehia.todo.entities;
 
 import java.util.Date;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 
-@Entity
-@Table(name="TODOS")
+@Document
 public class Todo {
 	@Id
-	@GeneratedValue
-	private int id;
-	@NotNull
+	private String id;
+	@NotNull(message = "Title is required")
+	@Size(min = 3, message = "Title must be at least 3 characters long")
 	private String title;
-	@NotNull
+	@NotNull(message = "description is required")
 	private String description;
-	@JsonFormat(shape = Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
+	@JsonFormat(shape = Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
 	private Date date;
 	private boolean done;
 
@@ -36,11 +35,11 @@ public class Todo {
 		this.done = false;
 	}
 	
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 	
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	
