@@ -5,8 +5,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -15,28 +13,16 @@ import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mohyehia.todo.TodoAppApplication;
+import com.mohyehia.todo.AbstractTodoApiTest;
 import com.mohyehia.todo.entities.Todo;
 import com.mohyehia.todo.services.TodoService;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT, classes = TodoAppApplication.class)
-@AutoConfigureMockMvc
-public class TodoControllerTest {
-	@Autowired
-	private MockMvc mockMvc;
+public class TodoControllerTest extends AbstractTodoApiTest {
 	
 	@MockBean
 	private TodoService todoService;
@@ -49,10 +35,10 @@ public class TodoControllerTest {
 		List<Todo> data = Arrays.asList(todo1, todo2);
 		
 		//given
-		given(todoService.findAll()).willReturn(data);
+		given(todoService.findByUserId(anyString())).willReturn(data);
 		
 		mockMvc.perform(
-				get("/api/todos").contentType(MediaType.APPLICATION_JSON))
+				doGet("/api/todos").contentType(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$", hasSize(2)))
 			.andExpect(jsonPath("$[0].title", equalTo(todo1.getTitle())));
@@ -67,7 +53,7 @@ public class TodoControllerTest {
 		given(todoService.saveTodo(Mockito.any(Todo.class))).willReturn(todo);
 		
 		mockMvc.perform(
-				post("/api/todos").contentType(MediaType.APPLICATION_JSON)
+				doPost("/api/todos").contentType(MediaType.APPLICATION_JSON)
 				.content(new ObjectMapper().writeValueAsString(todo)))
 		.andExpect(status().isCreated())
 		.andExpect(jsonPath("$.title", is(todo.getTitle())));
@@ -82,7 +68,7 @@ public class TodoControllerTest {
 		given(todoService.getTodo(anyString())).willReturn(todo);
 		
 		mockMvc.perform(
-				get("/api/todos/1").contentType(MediaType.APPLICATION_JSON))
+				doGet("/api/todos/1").contentType(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.title", is(todo.getTitle())));
 	}

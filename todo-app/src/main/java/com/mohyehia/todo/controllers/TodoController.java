@@ -23,13 +23,13 @@ import com.mohyehia.todo.services.TodoService;
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping(value = "/api/todos")
-public class TodoController {
+public class TodoController extends BaseController {
 	@Autowired
 	private TodoService todoService;
 	
 	@GetMapping(value = {"", "/"})
-	public ResponseEntity<List<Todo>> getAll() {
-		return new ResponseEntity<>(todoService.findAll(), HttpStatus.OK);
+	public ResponseEntity<List<Todo>> getAll() {		
+		return new ResponseEntity<>(todoService.findByUserId(getCurrentUser().getId()), HttpStatus.OK);
 	}
 	
 	@GetMapping("/{id}")
@@ -39,6 +39,7 @@ public class TodoController {
 	
 	@PostMapping(value = {"", "/"})
 	public ResponseEntity<Todo> addTodo(@Valid @RequestBody Todo todo) {
+		todo.setUserId(getCurrentUser().getId());
 		return new ResponseEntity<>(todoService.saveTodo(todo), HttpStatus.CREATED);
 	}
 	

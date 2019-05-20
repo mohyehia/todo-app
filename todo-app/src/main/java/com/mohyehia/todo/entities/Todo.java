@@ -23,6 +23,8 @@ public class Todo {
 	@JsonFormat(shape = Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
 	private Date date;
 	private boolean done;
+	
+	private String userId;
 
 	public Todo() {
 		
@@ -75,10 +77,18 @@ public class Todo {
 		this.done = done;
 	}
 
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
 	@Override
 	public String toString() {
 		return "Todo [id=" + id + ", title=" + title + ", description=" + description + ", date=" + date + ", done="
-				+ done + "]";
+				+ done + ", userId=" + userId + "]";
 	}
 	
 }
