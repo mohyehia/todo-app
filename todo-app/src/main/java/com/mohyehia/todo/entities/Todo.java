@@ -20,7 +20,7 @@ public class Todo {
 	private String title;
 	@NotNull(message = "description is required")
 	private String description;
-	@JsonFormat(shape = Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
+	@JsonFormat(shape = Shape.STRING, pattern = "yyyy-MM-dd")
 	private Date date;
 	private boolean done;
 	

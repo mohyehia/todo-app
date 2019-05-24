@@ -34,6 +34,7 @@ public class UserService implements UserDetailsService {
 	}
 	
 	public ApiUser save(ApiUser user) {
+		user = new ApiUser(user.getEmail(), user.getPassword(), user.getName());
 		user.setPassword(passwordEncoder().encode(user.getPassword()));
 		return userRepository.save(user);
 	}

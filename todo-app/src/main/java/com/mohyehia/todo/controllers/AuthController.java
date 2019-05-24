@@ -1,21 +1,26 @@
 package com.mohyehia.todo.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mohyehia.todo.entities.ApiUser;
 import com.mohyehia.todo.entities.JwtResponse;
 import com.mohyehia.todo.entities.SigninRequest;
 import com.mohyehia.todo.services.UserService;
 import com.mohyehia.todo.utils.TokenUtil;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping(value = "/api/auth")
 public class AuthController {
@@ -39,5 +44,10 @@ public class AuthController {
 		UserDetails userDetails = userService.loadUserByUsername(signinRequest.getUsername());
 		String token = tokenUtil.generateToken(userDetails);
 		return new JwtResponse(token);
+	}
+	
+	@PostMapping("/signup")
+	public ResponseEntity<ApiUser> signup(@RequestBody ApiUser apiUser){
+		return new ResponseEntity<> (userService.save(apiUser), HttpStatus.CREATED);
 	}
 }

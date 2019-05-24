@@ -10,7 +10,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 @Document(collection = "users")
 public class ApiUser implements UserDetails{
@@ -24,7 +25,7 @@ public class ApiUser implements UserDetails{
 	private String email;
 	
 	@NotEmpty
-	@JsonIgnore
+	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
 	
 	@NotEmpty
@@ -32,9 +33,7 @@ public class ApiUser implements UserDetails{
 	
 	private Date created;
 	
-	public ApiUser() {
-		// TODO Auto-generated constructor stub
-	}
+	public ApiUser() {}
 	
 	public ApiUser(@NotEmpty String email, @NotEmpty String password, @NotEmpty String name) {
 		this.email = email;
@@ -107,6 +106,14 @@ public class ApiUser implements UserDetails{
 
 	public Date getCreated() {
 		return created;
+	}
+	
+	public String getEmail() {
+		return email;
+	}
+	
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 	public void setCreated(Date created) {
