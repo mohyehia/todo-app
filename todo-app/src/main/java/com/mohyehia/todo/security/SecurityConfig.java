@@ -13,7 +13,15 @@ import com.mohyehia.todo.filters.AuthFilter;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
-	private final String[] PUBLIC_ENDPOINTS = {"/api/auth/**"};
+	private final String[] PUBLIC_ENDPOINTS = {
+			"/api/auth/**",
+			"/v2/api-docs",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**"
+    };
 	
 	@Bean
 	@Override

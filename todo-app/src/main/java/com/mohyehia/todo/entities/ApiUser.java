@@ -13,6 +13,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
+import io.swagger.annotations.ApiModelProperty;
+
 @Document(collection = "users")
 public class ApiUser implements UserDetails{
 
@@ -21,6 +23,7 @@ public class ApiUser implements UserDetails{
 	@Id
 	private String id;
 
+	@ApiModelProperty(value = "Email address of the user")
 	@NotEmpty
 	private String email;
 	
@@ -28,9 +31,11 @@ public class ApiUser implements UserDetails{
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
 	
+	@ApiModelProperty(value = "Name of the user")
 	@NotEmpty
 	private String name;
 	
+	@ApiModelProperty(value = "Created date of this user")
 	private Date created;
 	
 	public ApiUser() {}

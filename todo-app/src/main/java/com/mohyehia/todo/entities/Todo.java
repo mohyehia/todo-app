@@ -11,19 +11,28 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 
+import io.swagger.annotations.ApiModelProperty;
+
 @Document
 public class Todo {
 	@Id
 	private String id;
+	
+	@ApiModelProperty(value = "Descriptive title for the todo")
 	@NotNull(message = "Title is required")
 	@Size(min = 3, message = "Title must be at least 3 characters long")
 	private String title;
+	
+	@ApiModelProperty(value = "Description or content of the created todo")
 	@NotNull(message = "description is required")
 	private String description;
+	
+	@ApiModelProperty(value = "Created date of this todo")
 	@JsonFormat(shape = Shape.STRING, pattern = "yyyy-MM-dd")
 	private Date date;
 	private boolean done;
 	
+	@ApiModelProperty(value = "Id of the user who is creating the todo")
 	private String userId;
 
 	public Todo() {
